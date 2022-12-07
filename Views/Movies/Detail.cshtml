@@ -1,0 +1,77 @@
+﻿@model Movie;
+@{ 
+    ViewData["Title"] = "Detail of Movie";
+}
+<div class="row">
+        <div class="col-md-5 col-xs-6 border-primary mb-3 container">
+            <div class="card col-md-12 mb-3 p-1" overflow:"hidden">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header text-white bg-info">
+                            <p class="card-text">
+                                <h5 class=" card-title">
+                                    @Model.Name
+                                    <a class="text-white float-right"><i class="badge-info bi-pencil-square"></i></a>
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="~/images/films/@Url.Content(Model.ImageURL)"  width="100%" alt="Movie" />
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-text">@Model.Discription</p>
+                            <p class="card-text"><b>Cinema: </b>@Model.Cinema.Name</p>
+                            <p class="card-text"><b>Catogory: </b>@Model.MovieCategory</p>
+                            <p class="card-text"><b>StartDate: </b>@Model.StartDate.ToString("dd MMM yy")</p>
+                            <p class="card-text"><b>EndDate: </b>@Model.EndDate.ToString("dd MMM yy")</p>
+                            <p class="card-text">
+
+                                <b>Status : </b>
+                                @if (DateTime.Now >= Model.StartDate && DateTime.Now <= Model.EndDate)
+                                {
+                                    <span class="badge bg-success text-white">AVALIBLE</span>
+                                }
+                                else if (DateTime.Now > Model.EndDate)
+                                {
+                                    <span class="badge bg-danger text-white">EXPIRED</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger text-white">UPCOMING</span>
+                                }
+                            </p>
+
+                        </div>
+
+                    </div>
+                    <div class="d-flex justify-content-between container m-2" >
+                        <div>
+                            <img src="~/images/producers/@Url.Content(Model.Producer.ProfilePictureURL)" class="border rounded-circle " width="110" alt="Profile" />
+                            <a asp-action="Detail" asp-controller="Producers" class="btn btn-outline-primary mt-2"> <i class="bi bi-ticket-detailed h6"></i>Producer Detail</a>
+                        </div>
+                        <div>
+                            <img src="~/images/cinemas/@Url.Content(Model.Cinema.CinemaLogo)" class="border rounded-circle " width="80" alt="Profile" />
+                            <a asp-action="Detail" asp-controller="Cinema" class="btn btn-outline-primary mt-2"> <i class="bi bi-ticket-detailed h6"></i>Cinema Detail</a>
+
+                        </div>
+                        
+                    </div>
+                   
+                    <div class="col-md-12">
+                        <div class="card-footer">
+                            <p class="card-text">
+                                <a class="btn btn-outline-primary float-right" asp-action="Index">
+                                    <i class="bi bi-back"></i> Back
+                                </a>
+                                <a class="btn btn-secondary text-white">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart (Price @Model.Price.ToString("c"))
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

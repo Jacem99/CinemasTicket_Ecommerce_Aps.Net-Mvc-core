@@ -1,0 +1,85 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using CinemaMvc.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject ApplicationDbContext applicationDbContext
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Cinemas</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body style="background-color:cornsilk;">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-dark border-bottom box-shadow p-2 ">
+            <div class="container-fluid">
+                <a class="navbar-brand" style="color:mediumspringgreen;" asp-area="" asp-controller="Movies" asp-action="Index">Cinemas</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon" ><i class="bi bi-list text-white h3"></i></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex ">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-muted" asp-area="" asp-controller="Movies" asp-action="Index"><i class="bi bi-film"></i> Movie</a>
+                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown ">
+                                <a class="nav-link dropdown-toggle text-muted" href="#" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="bi bi-gear"></i> Management
+                                </a>
+                                <div class="dropdown-menu bg-light" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" asp-controller="Cinemas" asp-action="Index"><i class="bi bi-camera-reels"></i> Cinemas</a>
+                                    <a class="dropdown-item" asp-controller="Producers" asp-action="Index"><i class="bi bi-headset"></i> Producer</a>
+                                    <a class="dropdown-item" asp-controller="Actors" asp-action="Index"><i class="bi bi-person-square"></i> Actors</a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+
+                    <div class="d-flex justify-content-between">
+                        <form method="get" asp-controller="Movies" asp-action="Index">
+                            <div class="d-flex">
+                                <button class="btn btn-primary mr-1" ><i class="bi bi-search"></i></button>
+                                <input type="search" name="searching" placeholder="Search . ." class="form-control" />
+                            </div>
+                        </form>
+                    </div>
+                        <partial name="_LoginPartial" />
+                    
+                </div>
+            </div>
+
+        </nav>
+    </header>
+    <div>
+        <main role="main" class="pb-3 p-4">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted bg-white">
+        <div class="container">
+            &copy; 2022 - Cinemas - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+    <script>
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+﻿@model Actor
+@{ 
+    ViewData["Title"] = "Add a new actor";
+}
+
+<div>
+    <p class="h2 text-center text-muted mb-4"> @(Model.Id> 0 ? "Edit Actor" : "Add a New Actor" ) </p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7 offset-2 bg-white p-5 rounded">
+                <div class="text-center mt-0 mb-3 @(Model.Id> 0 ? "" : "d-none" )" id="divImg">
+                    <img class="img-thumbnail rounded" width="160" height="110"
+                         src="~/images/actors/@(Model.Id> 0 ? @Url.Content(Model.ProfilePictureURL) : "")" id="ProfilePicturePreview" />
+                </div>
+                <form class="" method="post" asp-action="@(Model.Id> 0 ? "Edit" : "Create")" enctype="multipart/form-data" autocomplete="off">
+                    <div class="text-danger" asp-validation-summary="All"></div>
+                    <input type="hidden" asp-for="Id" />
+                    <div class="custom-file mb-3">
+                        <input class="custom-file-input" type="file" accept=".png ,.jpg,.jpeg" asp-for="ProfilePictureURL" /> 
+                        <label asp-for="ProfilePictureURL" class="custom-file-label"></label>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FullName" class="text-muted control-label"></label>
+                        <input class="form-control" type="text" asp-for="FullName" />
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Bio" class="text-muted control-label"></label>
+                        <input class="form-control" type="text" asp-for="Bio" />
+
+                    </div>
+                    <div class="form-group mt-4 mb-0">
+                        <input type="submit" class="btn btn-outline-success float-right" value="@(Model.Id> 0 ? "Edit" : "Create")" />
+                        <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{ 
+    @{ 
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+<script>
+
+    $(document).ready(function () {
+        $("#ProfilePictureURL").on("change", function () {
+            var selectfile = $(this).val().split('\\').pop();
+            console.log(selectfile);
+           $(this).siblings('label').text(selectfile);
+
+            var divImg = $("#divImg");
+            divImg.removeClass('d-none');
+            var img = window.URL.createObjectURL(this.files[0]);
+            console.log(img);
+            divImg.find('img').attr('src', img);
+
+
+            @* var img = document.getElementById("ProfilePicturePreview");
+            img.src = $(this).val;*@
+        })
+    });
+</script>
+}

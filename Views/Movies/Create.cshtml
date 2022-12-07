@@ -1,0 +1,103 @@
+﻿
+@model ViewModelMovies;
+
+@{
+    ViewData["Title"] = "Movie";
+}
+
+<div>
+    <p class="h2 text-center text-muted mb-4"> @(Model.Id> 0 ? "Edit Movie" : "Add a New Movei" )</p>
+    <div class="container ">
+        <div class="row">
+            <div class="col-md-7 offset-2 bg-white p-5 rounded">
+                <div class="@(Model.Id> 0 ? "" : "d-none" ) text-center mb-3" id="divImg">
+                    <img class="img-thumbnail" width="220" height="100" id"ProfilePicturePreview"
+                         src="~/images/films/@(Model.Id> 0 ? @Url.Content(Model.ImageURL) : "")" />
+                </div>
+                <form class="" method="post" asp-action="@(Model.Id> 0 ? "Edit" : "Create")" enctype="multipart/form-data">
+                    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="custom-file mb-3">
+                        <input class="custom-file-input" type="file" accept=".png ,.jpg,.jpeg" asp-for="ImageURL" />
+                        <label asp-for="ImageURL" class="custom-file-label"></label>
+                        <span class="text-danger" asp-validation-for="ImageURL"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="text-muted control-label"></label>
+                        <input class="form-control" type="text" asp-for="Name" />
+                        <span class="text-danger" asp-validation-for="Name"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Discription" class="text-muted control-label"></label>
+                        <input class="form-control" type="text" asp-for="Discription" />
+                        <span class="text-danger" asp-validation-for="Discription"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Price" class="text-muted control-label"></label>
+                        <input class="form-control" type="number" asp-for="Price" />
+                        <span class="text-danger" asp-validation-for="Price"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StartDate" class="text-muted control-label"></label>
+                        <input class="form-control" type="date" asp-for="StartDate" />
+                        <span class="text-danger" asp-validation-for="StartDate"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EndDate" class="text-muted control-label"></label>
+                        <input class="form-control" type="date" asp-for="EndDate" />
+                        <span class="text-danger" asp-validation-for="EndDate"></span>
+                    </div>
+
+                    <div class="form-group w-50">
+                        <label asp-for="MovieCategory" class="text-muted"></label>
+                        <select class="form-control" asp-for="MovieCategory" asp-items="@Html.GetEnumSelectList<EnumClasses.MovieCategory>()">
+                        </select>
+                        <span asp-validation-for="MovieCategory" class="alert-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ActorId" class="text-muted control-label"></label>
+                        <select class="form-control" asp-for="ActorId" asp-items="@(new SelectList(Model.actors,"Id","FullName"))"></select>
+                        <span class="text-danger" asp-validation-for="ActorId"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProducerId" class="text-muted control-label"></label>
+                        <select class="form-control" asp-for="ProducerId" asp-items="@(new SelectList(Model.producers,"Id","FullName"))"></select>
+                        <span class="text-danger" asp-validation-for="ProducerId"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CinemaId" class="text-muted control-label"></label>
+                        <select class="form-control" asp-for="CinemaId" asp-items="@(new SelectList(Model.cinemas,"Id","Name"))"></select>
+                        <span class="text-danger" asp-validation-for="CinemaId"></span>
+                    </div>
+
+                    <div class="form-group mt-4 mb-0">
+                        <input type="submit" class="btn btn-outline-success float-right" value="@(Model.Id> 0 ? "Edit" : "Create")" />
+                        <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+        $(document).ready(function () {
+            $("#ImageURL").on("change", function () {
+                var selectfile = $(this).val().split('\\').pop();
+
+                $(this).siblings('label').text(selectfile);
+
+                var divImg = $("#divImg");
+                divImg.removeClass('d-none');
+                var img = window.URL.createObjectURL(this.files[0]);
+                divImg.find('img').attr('src', img);
+
+            })
+        });
+    </script>
+}

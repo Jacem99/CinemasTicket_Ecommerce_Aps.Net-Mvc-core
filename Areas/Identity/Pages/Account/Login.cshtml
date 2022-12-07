@@ -1,0 +1,90 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
+}
+
+<form id="account" method="post">
+    <hr />
+    <div class="login-form-icon d-flex justify-content-center">
+        <i class="fas fa-user-circle fa-9x"></i>
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="col-md-12">
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Input.Password"></label>
+                    <input asp-for="Input.Password" class="form-control" id="showText" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="checkbox">
+                <input type="checkbox" id="checkboxClick" />
+                <label for="checkboxClick">Show password</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label asp-for="Input.RememberMe">
+                    <input asp-for="Input.RememberMe" />
+                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 d-flex justify-content-center">
+        <div class="form-group col-8">
+            <button type="submit" class="btn btn-primary col-12">Log in</button>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+
+            <p>
+                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+            </p>
+
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+    $(document).ready(function () {
+        var showPass = $("#checkboxClick").change(function () {
+
+            var type = $("#showText").attr("type");
+            if (type == "password") {
+
+                $("#showText").attr("type", "text");
+            }
+            else {
+                $("#showText").attr("type", "password");
+
+            }
+
+
+        })
+    })
+    </script>
+}
